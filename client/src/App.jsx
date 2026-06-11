@@ -8,20 +8,23 @@ function App() {
   const [newTodo, setNewTodo] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const fetchTodos = async () => {
-    try {
-      const res = await fetch(API_URL);
-      const data = await res.json();
-      setTodos(data);
-    } catch (err) {
-      console.error("Error fetching todos:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    let isMounted = true;
+    const fetchTodos = async () => {
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        if (isMounted) setTodos(data);
+      } catch (err) {
+        console.error("Error fetching todos:", err);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
     fetchTodos();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const addTodo = async (e) => {
@@ -35,7 +38,7 @@ function App() {
         body: JSON.stringify({ text: newTodo }),
       });
       const data = await res.json();
-      setTodos([data, ...todos]);
+      setTodos((prev) => [data, ...prev]);
       setNewTodo("");
     } catch (err) {
       console.error("Error adding todo:", err);
@@ -48,7 +51,7 @@ function App() {
         method: "PATCH",
       });
       const data = await res.json();
-      setTodos(todos.map((todo) => (todo._id === id ? data : todo)));
+      setTodos((prev) => prev.map((todo) => (todo._id === id ? data : todo)));
     } catch (err) {
       console.error("Error toggling todo:", err);
     }
@@ -59,7 +62,7 @@ function App() {
       await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
       });
-      setTodos(todos.filter((todo) => todo._id !== id));
+      setTodos((prev) => prev.filter((todo) => todo._id !== id));
     } catch (err) {
       console.error("Error deleting todo:", err);
     }
