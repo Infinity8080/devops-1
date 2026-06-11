@@ -1,0 +1,14 @@
+services:
+  backend:
+    build: ./server
+    container_name: todo-backend
+    restart: no
+    env_file: ./server/.env
+    ports:
+      - "5000:5000"
+  frontend:
+    build: ./client
+    container_name: todo-frontend
+    restart: no
+    ports:
+      - "5173:5173"
