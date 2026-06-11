@@ -11,7 +11,7 @@ services:
     build:
       context: ./client
       args:
-        VITE_API_URL: http://184.73.56.10/api
+        VITE_API_URL: http://184.73.56.10:5000/api
     container_name: todo-frontend
     restart: no
     ports:

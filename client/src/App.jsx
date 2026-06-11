@@ -40,7 +40,7 @@ function App() {
       setTodos((prev) => [data, ...prev]);
       setNewTodo("");
     } catch (err) {
-      console.error("Error adding todo:", err);
+      console.error("Error adding todo: ", err);
     }
   };
 
