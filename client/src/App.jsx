@@ -7,7 +7,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
   const [loading, setLoading] = useState(true);
-  const test = 2;
+  const test = 3;
   useEffect(() => {
     let isMounted = true;
     const fetchTodos = async () => {
