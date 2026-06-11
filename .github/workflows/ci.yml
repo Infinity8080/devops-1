@@ -43,7 +43,7 @@ jobs:
 
   deploy:
     needs: build-and-lint
-    if: github.event_name == 'push'
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -51,7 +51,7 @@ jobs:
       - name: Add EC2 to known_hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H "$EC2_HOST" >> ~/.ssh/known-hosts
+          ssh-keyscan -H "$EC2_HOST" >> ~/.ssh/known_hosts
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
 
@@ -69,7 +69,7 @@ jobs:
         run: |
           ssh -i ec2_key.pem ${EC2_USER}@${EC2_HOST} << EOF
             set -e
-            cd "${EC2_APP_DIR}"
+            cd ${EC2_APP_DIR}
             git fetch --all
             git reset --hard origin/main
             docker compose up -d --build
