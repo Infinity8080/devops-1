@@ -6,9 +6,12 @@ services:
     env_file: ./server/.env
     ports:
       - "5000:5000"
+
   frontend:
     build: ./client
     container_name: todo-frontend
     restart: no
     ports:
       - "5173:5173"
+    depends_on:
+      - backend
