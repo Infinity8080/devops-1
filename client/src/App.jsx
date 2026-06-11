@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
-const API_URL = "http://localhost:5000/api/todos";
+const API_URL = `${import.meta.env.VITE_API_URL}/todos`;
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
   const [loading, setLoading] = useState(true);
-  const test = 4;
   useEffect(() => {
     let isMounted = true;
     const fetchTodos = async () => {
@@ -41,7 +40,7 @@ function App() {
       setTodos((prev) => [data, ...prev]);
       setNewTodo("");
     } catch (err) {
-      console.error("Error adding todo:", err);
+      console.error("Error adding todo: ", err);
     }
   };
 
@@ -70,7 +69,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Todo App !!</h1>
+      <h1>Todo App !! ()</h1>
 
       <form onSubmit={addTodo} className="todo-form">
         <input
